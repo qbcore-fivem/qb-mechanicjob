@@ -217,11 +217,7 @@ end)
 
 RegisterNetEvent('qb-mechanicjob:server:updateVehicleComponents', function(plate, componentData)
     if plate and componentData then
-        if vehicleComponents[plate] then
-            vehicleComponents[plate] = componentData
-        else
-            vehicleComponents[plate] = componentData
-        end
+        vehicleComponents[plate] = componentData
     end
     local isOwned = IsVehicleOwned(plate)
     if isOwned then MySQL.update('UPDATE player_vehicles SET status = ? WHERE plate = ?', { json.encode(vehicleComponents[plate]), plate }) end
