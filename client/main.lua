@@ -7,7 +7,7 @@ AddEventHandler('OnResourceStart', function(resourceName)
     PlayerData = QBCore.Functions.GetPlayerData()
 end)
 
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
 end)
 
