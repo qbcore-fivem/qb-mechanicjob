@@ -63,9 +63,9 @@ RegisterNetEvent('qb-mechanicjob:client:PartsMenu', function()
         local petrolTankHealth = GetVehiclePetrolTankHealth(vehicle)
 
         local vehicleMenu = {
-            { header = Lang:t('menu.vehicle_stats'), isMenuHeader = true,                                                                                                                                                  icon = 'fas fa-gears' },
-            { header = Lang:t('menu.engine_health'), txt = Lang:t('menu.status') .. ': ' .. '<span style="color:' .. getHealthColor(engineHealth) .. ';">' .. math.ceil((engineHealth / 1000) * 100) .. '%</span>',        isMenuHeader = true },
-            { header = Lang:t('menu.body_health'),   txt = Lang:t('menu.status') .. ': ' .. '<span style="color:' .. getHealthColor(bodyHealth) .. ';">' .. math.ceil((bodyHealth / 1000) * 100) .. '%</span>',            isMenuHeader = true },
+            { header = Lang:t('menu.vehicle_stats'), isMenuHeader = true,                                                                                                                                                   icon = 'fas fa-gears' },
+            { header = Lang:t('menu.engine_health'), txt = Lang:t('menu.status') .. ': ' .. '<span style="color:' .. getHealthColor(engineHealth) .. ';">' .. math.ceil((engineHealth / 1000) * 100) .. '%</span>',         isMenuHeader = true },
+            { header = Lang:t('menu.body_health'),   txt = Lang:t('menu.status') .. ': ' .. '<span style="color:' .. getHealthColor(bodyHealth) .. ';">' .. math.ceil((bodyHealth / 1000) * 100) .. '%</span>',             isMenuHeader = true },
             { header = Lang:t('menu.fuel_health'),   txt = Lang:t('menu.status') .. ': ' .. '<span style="color:' .. getHealthColor(petrolTankHealth) .. ';">' .. math.ceil((petrolTankHealth / 1000) * 100) .. '%</span>', isMenuHeader = true },
         }
 

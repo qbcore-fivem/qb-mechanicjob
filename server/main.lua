@@ -1,4 +1,5 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject({ 'Functions', 'Commands' })
+local sharedItems = exports['qb-core']:GetShared('Items')
 local vehicleComponents = {}
 local drivingDistance = {}
 local tunedVehicles = {}
@@ -98,7 +99,7 @@ RegisterNetEvent('qb-mechanicjob:server:stash', function(data)
     local src = source
     local shopName = data.job
     if not Config.Shops[shopName] then return end
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = exports['qb-core']:GetPlayer(src)
     if not Player then return end
     if Config.Shops[shopName].managed and Player.PlayerData.job.name ~= shopName then return end
     local playerPed = GetPlayerPed(src)
@@ -237,11 +238,11 @@ end)
 
 RegisterNetEvent('qb-mechanicjob:server:removeItem', function(part, amount)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = exports['qb-core']:GetPlayer(src)
     if not Player then return end
     if not amount then amount = 1 end
     if not exports['qb-inventory']:RemoveItem(src, part, amount, false, 'qb-mechanicjob:server:removeItem') then DropPlayer(src, 'qb-mechanicjob:server:removeItem') end
-    TriggerClientEvent('qb-inventory:client:ItemBox', src, QBCore.Shared.Items[part], 'remove')
+    TriggerClientEvent('qb-inventory:client:ItemBox', src, sharedItems[part], 'remove')
 end)
 
 -- Items
@@ -257,7 +258,7 @@ local performanceParts = {
 
 for i = 1, #performanceParts do
     QBCore.Functions.CreateUseableItem(performanceParts[i], function(source, item)
-        local Player = QBCore.Functions.GetPlayer(source)
+        local Player = exports['qb-core']:GetPlayer(source)
         if not Player then return end
         if Config.RequireJob and Player.PlayerData.job.type ~= 'mechanic' then return end
         TriggerClientEvent('qb-mechanicjob:client:installPart', source, item.name)
@@ -276,7 +277,7 @@ local cosmeticParts = {
 
 for i = 1, #cosmeticParts do
     QBCore.Functions.CreateUseableItem(cosmeticParts[i], function(source, item)
-        local Player = QBCore.Functions.GetPlayer(source)
+        local Player = exports['qb-core']:GetPlayer(source)
         if not Player then return end
         if Config.RequireJob and Player.PlayerData.job.type ~= 'mechanic' then return end
         TriggerClientEvent('qb-mechanicjob:client:installCosmetic', source, item.name)
@@ -284,46 +285,46 @@ for i = 1, #cosmeticParts do
 end
 
 QBCore.Functions.CreateUseableItem('veh_toolbox', function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     if not Player then return end
     if Config.RequireJob and Player.PlayerData.job.type ~= 'mechanic' then return end
     TriggerClientEvent('qb-mechanicjob:client:PartsMenu', source)
 end)
 
 QBCore.Functions.CreateUseableItem('tunerlaptop', function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     if not Player then return end
     if Config.RequireJob and Player.PlayerData.job.type ~= 'mechanic' then return end
     TriggerClientEvent('qb-mechanicjob:client:openChip', source)
 end)
 
 QBCore.Functions.CreateUseableItem('nitrous', function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     if not Player then return end
     if Config.RequireJob and Player.PlayerData.job.type ~= 'mechanic' then return end
     TriggerClientEvent('qb-mechanicjob:client:installNitrous', source)
 end)
 
 QBCore.Functions.CreateUseableItem('tirerepairkit', function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     if not Player then return end
     TriggerClientEvent('qb-mechanicjob:client:repairTire', source)
 end)
 
 QBCore.Functions.CreateUseableItem('repairkit', function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     if not Player then return end
     TriggerClientEvent('qb-mechanicjob:client:repairVehicle', source)
 end)
 
 QBCore.Functions.CreateUseableItem('advancedrepairkit', function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     if not Player then return end
     TriggerClientEvent('qb-mechanicjob:client:repairVehicleFull', source)
 end)
 
 QBCore.Functions.CreateUseableItem('cleaningkit', function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     if not Player then return end
     TriggerClientEvent('qb-mechanicjob:client:cleanVehicle', source)
 end)

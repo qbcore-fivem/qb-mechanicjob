@@ -1,3 +1,4 @@
+local sharedVehicles = exports['qb-core']:GetShared('Vehicles')
 PlayerData = {}
 
 -- Handlers
@@ -11,8 +12,14 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
 end)
 
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
-    PlayerData.job = JobInfo
+RegisterNetEvent('QBCore:Client:OnPlayerUpdated', function(key, val)
+    if key == 'job' then
+        local JobInfo = val
+        PlayerData.job = JobInfo
+    elseif key == 'all' then
+        local JobInfo = val.job
+        PlayerData.job = JobInfo
+    end
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
@@ -80,7 +87,7 @@ local function VehicleList(shop)
     for i = 1, #list do
         local v = list[i]
         vehicleMenu[#vehicleMenu + 1] = {
-            header = QBCore.Shared.Vehicles[v].name,
+            header = sharedVehicles[v].name,
             params = {
                 event = 'qb-mechanicjob:client:SpawnListVehicle',
                 args = {

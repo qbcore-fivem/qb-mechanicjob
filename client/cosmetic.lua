@@ -1,4 +1,4 @@
-QBCore = exports['qb-core']:GetCoreObject()
+QBCore = exports['qb-core']:GetCoreObject({ 'Functions' })
 local particleEffects = {}
 local isPainting = false
 
@@ -657,7 +657,7 @@ RegisterNetEvent('qb-mechanicjob:client:vehicleSetColors', function(netId, secti
         SetVehicleExtraColours(vehicle, pearlescentColor, tonumber(colorIndex))
     end
 
-        
+
     local props = QBCore.Functions.GetVehicleProperties(vehicle)
     TriggerServerEvent('qb-mechanicjob:server:SaveVehicleProps', props)
 end)
