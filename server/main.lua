@@ -17,6 +17,18 @@ local function IsVehicleOwned(plate)
     return false
 end
 
+local function IsVehicleOwnedBy(plate, citizenid)
+    local result = MySQL.scalar.await('SELECT 1 FROM player_vehicles WHERE plate = ? AND citizenid = ?', { plate, citizenid })
+    if result then return true end
+    return false
+end
+
+local function PlayerHasMechanicJob(src)
+    local Player = exports['qb-core']:GetPlayer(src)
+    if not Player then return false end
+    return Player.PlayerData.job.type == 'mechanic'
+end
+
 local function StartParticles(coords, netId, color)
     for _, playerId in ipairs(GetPlayers()) do
         local playerPed = GetPlayerPed(playerId)
@@ -202,9 +214,14 @@ RegisterNetEvent('qb-mechanicjob:server:tuneStatus', function(plate)
 end)
 
 RegisterNetEvent('qb-mechanicjob:server:SaveVehicleProps', function(vehicleProps)
-    if IsVehicleOwned(vehicleProps.plate) then
-        MySQL.update('UPDATE player_vehicles SET mods = ? WHERE plate = ?', { json.encode(vehicleProps), vehicleProps.plate })
-    end
+    local src = source
+    local Player = exports['qb-core']:GetPlayer(src)
+    if not Player then return end
+    local plate = vehicleProps.plate
+    local citizenid = Player.PlayerData.citizenid
+    -- Allow if the caller owns the vehicle or is an active mechanic
+    if not (IsVehicleOwnedBy(plate, citizenid) or PlayerHasMechanicJob(src)) then return end
+    MySQL.update('UPDATE player_vehicles SET mods = ? WHERE plate = ?', { json.encode(vehicleProps), plate })
 end)
 
 RegisterNetEvent('qb-mechanicjob:server:repairVehicleComponent', function(plate, component)
@@ -217,6 +234,10 @@ RegisterNetEvent('qb-mechanicjob:server:repairVehicleComponent', function(plate,
 end)
 
 RegisterNetEvent('qb-mechanicjob:server:updateVehicleComponents', function(plate, componentData)
+    local src = source
+    local Player = exports['qb-core']:GetPlayer(src)
+    if not Player then return end
+    if not (IsVehicleOwnedBy(plate, Player.PlayerData.citizenid) or PlayerHasMechanicJob(src)) then return end
     if plate and componentData then
         vehicleComponents[plate] = componentData
     end
